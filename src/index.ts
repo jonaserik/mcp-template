@@ -49,9 +49,24 @@ server.tool(
 // });
 
 // TODO: Add your prompts here
-// server.prompt("prompt-name", "Prompt description", { /* schema */ }, async (args) => {
-//   return { messages: [{ role: "user", content: { type: "text", text: "Prompt content" } }] };
-// });
+server.prompt(
+  "explain-project",
+  "Explicates the purpose of this MCP server and available tools.",
+  {},
+  async () => {
+    return {
+      messages: [
+        {
+          role: "user",
+          content: {
+            type: "text",
+            text: "Welcome! This is the 'mcp-template'. I can help you build new MCP servers. Try using the 'template_ping' tool to test connectivity.",
+          },
+        },
+      ],
+    };
+  }
+);
 
 async function main() {
   const transport = new StdioServerTransport();
