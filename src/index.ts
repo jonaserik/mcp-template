@@ -2,13 +2,23 @@
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
 import { z } from "zod";
-import { initDatabase, closeDatabase } from "./db.js";
 
-// Initialize database before starting server
+import { createLogger } from "./lib/logger.js";
+import { db } from "./lib/database.js";
+
+const logger = createLogger('Main');
+
+// Initialize database
 try {
-  initDatabase();
+  db.init(`
+    CREATE TABLE IF NOT EXISTS system_metadata (
+      key TEXT PRIMARY KEY,
+      value TEXT,
+      updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
+    );
+  `);
 } catch (error) {
-  console.error("Failed to initialize database:", error);
+  logger.error("Failed to initialize database", error);
   process.exit(1);
 }
 
@@ -44,27 +54,22 @@ server.tool(
 // });
 
 async function main() {
-  // Create STDIO transport for communication
   const transport = new StdioServerTransport();
-
-  // Connect server to transport (handles handshake automatically)
   await server.connect(transport);
-
-  console.error("MCP server running on STDIO");
+  logger.info("MCP server running on STDIO");
 }
 
 function gracefulShutdown() {
-  console.error("Received shutdown signal. Closing server and database...");
+  logger.info("Received shutdown signal. Closing server and database...");
   server.close();
-  closeDatabase();
+  db.close();
   process.exit(0);
 }
 
-// Handle shutdown signals
 process.on("SIGINT", gracefulShutdown);
 process.on("SIGTERM", gracefulShutdown);
 
 main().catch((error) => {
-  console.error("Fatal error:", error);
+  logger.error("Fatal error", error);
   process.exit(1);
 });
