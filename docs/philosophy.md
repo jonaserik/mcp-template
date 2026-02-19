@@ -1,45 +1,42 @@
-# Philosophy: The Tao of IPA
+# IPA Methodology Core Principles
 
 > **Incremental • Procedural • Antifragile**
 
 ## The Context
-Development in AI-native IDEs (like Cursor or Antigravity) fundamentally changes the nature of software engineering:
-- **Generation is cheap.**
-- **Mutation is constant.**
-- **Regression is silent.**
-- **Complexity emerges faster than human cognition can track.**
+Software engineering within AI-native IDEs fundamentally alters the development lifecycle. In these environments, code generation and mutation occur at high velocities, which can introduce silent regressions and rapidly increase system complexity if not properly managed.
 
-The IPA Method was born as a response to this scenario. It is not just a testing method; it is an **operational paradigm** to govern systems that evolve with AI assistance.
+The IPA Methodology provides a structured operational framework to govern and stabilize software systems that evolve with AI assistance.
 
 ## 1. Incremental
-**Nothing is tested as a whole system. Everything is validated as a delta.**
+**Code is validated continuously as functional deltas rather than as monolithic updates.**
 
-Each code generation is a mutation, an experiment, a hypothesis.
-*   **Rule:** No mutation is integrated without explicit incremental validation.
-*   **Practice:** Tests must accompany the rhythm of generation.
+Each automated code generation represents a functional change that must be verified.
+*   **Principle:** No modification is integrated into the codebase without explicit, incremental validation.
+*   **Practice:** Test implementation must continuously track alongside code generation.
 
 ## 2. Procedural
-**AI creativity requires human discipline.**
+**Automated generation requires structured, disciplined workflows.**
 
-Where there is probability, IPA imposes process. Every change must follow an explicit ritual:
-1.  **Intent:** Define what should happen.
-2.  **Contract:** Define inputs, outputs, and invariants.
-3.  **Generation:** The AI writes the code.
-4.  **Validation:** The human validates the behavior.
-5.  **Learning:** Failures are registered.
+To ensure reliability, the IPA methodology strictly mandates a procedural approach. Every change must follow a standardized workflow:
+1.  **Intent:** Clearly define the objective of the specific change.
+2.  **Contract:** Specify the required inputs, expected outputs, and unyielding invariants.
+3.  **Generation:** The automated system or developer implements the change.
+4.  **Validation:** The new behavior is rigorously evaluated against the contract.
+5.  **Learning:** Any identified failures are logged and used to improve the system.
 
-Without procedure, generation becomes entropy.
+A defined procedure is essential to control system stability during automated development.
 
 ## 3. Antifragile
-**Errors are not exceptions. They are fuel.**
+**System failures are opportunities to enhance architectural resilience.**
 
-Each failure:
-- Generates a new test.
-- Expands semantic coverage.
-- Reduces the space for future regression.
+Each encountered failure should effectively:
+- Prompt the creation of a new regression test.
+- Expand the overall semantic test coverage.
+- Reduce the probability of future, similar regressions.
 
-*   **Rule:** No bug is fixed without becoming a permanent test.
-*   **Result:** The system improves *because* it failed.
+*   **Principle:** Every resolved issue must be secured by a permanent test.
+*   **Result:** The overall system quality and immunity increase continuously as edge cases are discovered and handled.
 
 ---
-> "We do not trust generation. We trust validation."
+> "System stability is established through rigorous validation."
+

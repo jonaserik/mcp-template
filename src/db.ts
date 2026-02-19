@@ -5,7 +5,10 @@ let db: Database.Database;
 export type { Database };
 
 export function initDatabase() {
-  const dbPath = path.resolve(process.cwd(), 'local_data.db');
+  // Resolve database path relative to this file (in dist/ or src/)
+  // We assume the db is in the project root of the MCP server
+  // __dirname will be .../dist or .../src
+  const dbPath = path.resolve(__dirname, '..', 'local_data.db');
   db = new Database(dbPath);
   console.error(`Database connected at ${dbPath}`);
   

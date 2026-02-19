@@ -15,9 +15,12 @@
     ```json
     "mcp-ipa-guardian": {
       "command": "node",
-      "args": ["/absolute/path/to/mcp-ipa-guardian/dist/index.js"]
+      "args": ["/absolute/path/to/mcp-ipa-guardian/dist/index.js"],
+      "cwd": "/path/to/your/target/project" 
     }
     ```
+
+    > **CRITICAL:** You **MUST** set the `cwd` (Current Working Directory) to the root of the project you want to guard. The server uses this path to store its state (`.ipa/`) and scan your project files. If you omit this, it will likely default to your home directory or the MCP client's directory, which is not what you want.
 
 ## Integrating with Your Project
 

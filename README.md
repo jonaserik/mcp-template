@@ -1,52 +1,53 @@
 # MCP IPA Guardian
 > **Incremental • Procedural • Antifragile**
 
-An MCP Server that enforces the IPA methodology for AI-assisted engineering. It acts as a strict guardian to prevent the degradation of code quality in high-speed generation environments.
+An MCP Server designed to enforce the IPA methodology for AI-assisted software engineering. Its primary objective is to maintain code quality and structural integrity in environments characterized by rapid code generation.
 
-## The Philosophy (Tao of IPA)
-1.  **Incremental:** Nothing is tested as a whole system. Everything is validated as a delta.
-2.  **Procedural:** AI creativity requires human discipline. Every change follows a ritual: `Intent -> Contract -> Generation -> Validation`.
-3.  **Antifragile:** Bugs are fuel. No failure is closed without becoming a permanent regression test.
+## Core Methodology
+1.  **Incremental:** System validation is treated as an iterative process. Every change is validated as a specific delta against the existing behavior.
+2.  **Procedural:** Automated generation requires structured governance. Every modification adheres to a defined lifecycle: `Intent -> Contract -> Generation -> Validation`.
+3.  **Antifragile:** Failures serve as a mechanism for improvement. Every identified issue must be accompanied by a reliable regression test to prevent recurrence and enhance system resilience.
 
 ## Workflow
 
-The server enforces the following state machine:
+The server enforces the following state machine to manage the development lifecycle:
 
-1.  **IDLE**: System is ready.
-2.  **INTENT**: User defines *what* changes (`register_intent`).
-3.  **CONTRACT**: User defines *how* it behaves (`define_contract`).
-4.  **IMPLEMENTATION**: Code is generated.
-5.  **VALIDATION_PENDING**: Test is executed actively (`run_validation_step`).
-    *   **PASS**: -> `VALIDATED`.
-    *   **FAIL**: -> `ANTIFRAGILITY`.
-6.  **ANTIFRAGILITY**: A failure occurred. You must fix it and provide a regression test path to retry validation.
-7.  **VALIDATED**: Cycle can be finished (`finish_cycle`), resetting to IDLE.
+1.  **IDLE**: The system is ready for new tasks.
+2.  **INTENT**: The expected changes and objectives are defined (`register_intent`).
+3.  **CONTRACT**: The expected behavior, inputs, and outputs are specified (`define_contract`).
+4.  **IMPLEMENTATION**: The code modifications are generated.
+5.  **VALIDATION_PENDING**: The defined tests are actively executed (`run_validation_step`).
+    *   **PASS**: Transitions to `VALIDATED`.
+    *   **FAIL**: Transitions to `ANTIFRAGILITY`.
+6.  **ANTIFRAGILITY**: A failure has been detected. The issue must be resolved, and a regression test path must be provided before validation can be retried.
+7.  **VALIDATED**: The cycle is successfully completed (`finish_cycle`), returning the state to IDLE.
 
 ## Tools
 
-*   `init_ipa_cycle`: Start a new task.
-*   `register_intent`: step 1.
-*   `define_contract`: step 2.
-*   `generate_contract_test`: Helper to scaffold tests.
-*   `run_validation_step`: **Active Execution** of tests.
-*   `register_failure`: Log failures and immunity plans.
-*   `analyze_reachability`: Runs `npm run test:ipa:reachability`.
-*   `check_structural_integrity`: Runs `npm run test:ipa:metrics`.
-*   `scaffold_dynamic_fixture`: Generates dynamic data builders to avoid "Fixed Data Rot".
+*   `init_ipa_cycle`: Initializes a new development task.
+*   `register_intent`: Defines the intent of the change (Step 1).
+*   `define_contract`: Establishes the contract for the change (Step 2).
+*   `generate_contract_test`: Helper utility to scaffold test structures.
+*   `run_validation_step`: Executes the defined validation tests.
+*   `register_failure`: Logs failures and outlines remediation plans.
+*   `analyze_reachability`: Executes `npm run test:ipa:reachability`.
+*   `check_structural_integrity`: Executes `npm run test:ipa:metrics`.
+*   `scaffold_dynamic_fixture`: Generates dynamic data builders to mitigate static data degradation.
 
 ## Integration
 
-To use the structural checks, add these scripts to your project's `package.json`:
+To utilize the structural validation features, add the following scripts to your project's `package.json`:
 
 ```json
 "scripts": {
-  "test:ipa:reachability": "ts-node tests/reachability.ts", // or your equivalent
+  "test:ipa:reachability": "ts-node tests/reachability.ts", // Optional: adapt to your environment
   "test:ipa:metrics": "ts-node tests/metrics.ts"
 }
 ```
 
 ## Documentation
-*   [Philosophy (The Tao of IPA)](docs/philosophy.md)
+*   [IPA Methodology Core Principles](docs/philosophy.md)
 *   [Setup & Usage Guide](docs/setup.md)
-*   [Methodology & Workflow](docs/methodology.md)
+*   [Operational Workflow](docs/methodology.md)
 *   [Case Study: Reachability](docs/case-study.md)
+

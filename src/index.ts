@@ -9,8 +9,9 @@ import { registerResources } from "./resources/index.js";
 const logger = createLogger('Main');
 
 // Initialize IPA State Manager
-// We use process.cwd() so the state is tracked in the folder where the server is running (the project being guarded)
-const stateManager = new IPAStateManager(process.cwd());
+// We use process.env.IPA_ROOT if provided, otherwise fallback to process.cwd()
+const rootDir = process.env.IPA_ROOT || process.cwd();
+const stateManager = new IPAStateManager(rootDir);
 
 // Create MCP server instance
 const server = new McpServer({
@@ -38,6 +39,33 @@ process.on("SIGINT", gracefulShutdown);
 process.on("SIGTERM", gracefulShutdown);
 
 main().catch((error) => {
+  const fs = require('fs');
+  const path = require('path');
+  const logPath = path.join(process.cwd(), 'mcp-ipa-error.log');
+  const errorMessage = `[${new Date().toISOString()}] FATAL ERROR: ${error.stack || error}\n`;
+  fs.appendFileSync(logPath, errorMessage);
+  
   logger.error("Fatal error", error);
   process.exit(1);
+});
+
+process.on('uncaughtException', (error) => {
+  const fs = require('fs');
+  const path = require('path');
+  const logPath = path.join(process.cwd(), 'mcp-ipa-error.log');
+  const errorMessage = `[${new Date().toISOString()}] UNCAUGHT EXCEPTION: ${error.stack || error}\n`;
+  fs.appendFileSync(logPath, errorMessage);
+  
+  console.error("Uncaught Exception:", error);
+  process.exit(1);
+});
+
+process.on('unhandledRejection', (reason, promise) => {
+  const fs = require('fs');
+  const path = require('path');
+  const logPath = path.join(process.cwd(), 'mcp-ipa-error.log');
+  const errorMessage = `[${new Date().toISOString()}] UNHANDLED REJECTION: ${reason}\n`;
+  fs.appendFileSync(logPath, errorMessage);
+  
+  console.error("Unhandled Rejection:", reason);
 });
