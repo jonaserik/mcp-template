@@ -5,6 +5,7 @@ import { z } from "zod";
 
 import { createLogger } from "./lib/logger.js";
 import { db } from "./lib/database.js";
+import { withErrorHandling } from "./lib/errors.js";
 
 const logger = createLogger('Main');
 
@@ -36,11 +37,12 @@ server.tool(
   { 
     message: z.string().optional().describe("Uma mensagem opcional para ecoar de volta") 
   },
-  async ({ message }) => {
+  withErrorHandling("template_ping", async (args: unknown) => {
+    const { message } = args as { message?: string };
     const reply = message ? `Pong! Você disse: ${message}` : "Pong!";
     console.error(`[template_ping] Recebido ping com mensagem: ${message || '(vazio)'}`);
     return { content: [{ type: "text", text: reply }] };
-  }
+  })
 );
 
 // TODO: Add your resources here
