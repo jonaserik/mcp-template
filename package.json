@@ -1,10 +1,10 @@
 {
-  "name": "mcp-template",
+  "name": "mcp-ipa-guardian",
   "version": "1.0.0",
-  "description": "MCP server template with STDIO transport",
+  "description": "MCP Server for the IPA (Incremental, Procedural, Antifragile) methodology",
   "main": "dist/index.js",
   "bin": {
-    "mcp-template": "dist/index.js"
+    "mcp-ipa-guardian": "dist/index.js"
   },
   "scripts": {
     "build": "tsc",

@@ -1,18 +1,45 @@
-# Filosofia de Engenharia de Contexto
+# Philosophy: The Tao of IPA
 
-Este documento rege o comportamento dos agentes que utilizam ou modificam este MCP.
+> **Incremental • Procedural • Antifragile**
 
-## 1. Integridade de Dados
-* **O SQLite é a Verdade:** Documentos de texto são voláteis; dados estruturados no banco de dados são permanentes. Toda decisão importante deve ser atomizada em tabelas.
-* **Validação em Primeiro Lugar:** Nenhuma ferramenta deve aceitar inputs sem um schema **Zod** correspondente. Erros de validação devem ser informativos para o usuário.
+## The Context
+Development in AI-native IDEs (like Cursor or Antigravity) fundamentally changes the nature of software engineering:
+- **Generation is cheap.**
+- **Mutation is constant.**
+- **Regression is silent.**
+- **Complexity emerges faster than human cognition can track.**
 
-## 2. Comunicação e Debugging
-* **O Silêncio do Stdout:** O canal `stdout` é exclusivo para o protocolo JSON-RPC do MCP. **Nunca** use `console.log` para mensagens de texto comuns.
-* **Logs no Stderr:** Todas as mensagens de status, progresso ou erros técnicos devem ser enviadas exclusivamente via `console.error` (canal `stderr`).
+The IPA Method was born as a response to this scenario. It is not just a testing method; it is an **operational paradigm** to govern systems that evolve with AI assistance.
 
-## 3. Contexto sem Redundância
-* **Aprendizado Único:** O objetivo deste sistema é eliminar a redundância. Se uma informação foi salva através deste MCP, ela não deve ser perguntada novamente em sessões futuras.
-* **Consciência Situacional:** O agente deve sempre consultar o `get_context` antes de sugerir mudanças arquiteturais pesadas.
+## 1. Incremental
+**Nothing is tested as a whole system. Everything is validated as a delta.**
 
-## 4. Hardware e Performance
-* **Otimização M4:** O código deve ser leve e aproveitar a eficiência de threads do Apple Silicon. Operações de I/O de banco de dados devem ser otimizadas para evitar bloqueios da interface da IDE.
+Each code generation is a mutation, an experiment, a hypothesis.
+*   **Rule:** No mutation is integrated without explicit incremental validation.
+*   **Practice:** Tests must accompany the rhythm of generation.
+
+## 2. Procedural
+**AI creativity requires human discipline.**
+
+Where there is probability, IPA imposes process. Every change must follow an explicit ritual:
+1.  **Intent:** Define what should happen.
+2.  **Contract:** Define inputs, outputs, and invariants.
+3.  **Generation:** The AI writes the code.
+4.  **Validation:** The human validates the behavior.
+5.  **Learning:** Failures are registered.
+
+Without procedure, generation becomes entropy.
+
+## 3. Antifragile
+**Errors are not exceptions. They are fuel.**
+
+Each failure:
+- Generates a new test.
+- Expands semantic coverage.
+- Reduces the space for future regression.
+
+*   **Rule:** No bug is fixed without becoming a permanent test.
+*   **Result:** The system improves *because* it failed.
+
+---
+> "We do not trust generation. We trust validation."
