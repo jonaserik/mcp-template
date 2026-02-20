@@ -111,6 +111,12 @@ describe('${component_path} Contract', () => {
             throw new Error(`Invalid phase: ${state.current_phase}. Must be in IMPLEMENTATION or correcting a failure.`);
         }
         
+        // Zero-Trust checks for naive commands
+        const trimmedCommand = command.trim();
+        if (trimmedCommand.startsWith('echo ') || trimmedCommand === 'exit 0' || trimmedCommand === 'true') {
+            throw new Error(`Zero-Trust Error: Command '${command}' rejected as a trivial bypass.`);
+        }
+        
         stateManager.transitionTo('VALIDATION_PENDING');
 
         // Execute the command
@@ -122,6 +128,7 @@ describe('${component_path} Contract', () => {
             const { stdout, stderr } = await execAsync(command);
             
             // If we get here, exit code was 0 (success)
+            stateManager.setValidationOutput(stdout, command);
             stateManager.transitionTo('VALIDATED');
             return { 
                 content: [{ 
@@ -132,6 +139,7 @@ describe('${component_path} Contract', () => {
 
         } catch (error: any) {
             // Exit code non-zero (failure)
+             stateManager.setValidationOutput((error.stdout || '') + '\n' + (error.stderr || ''), command);
              stateManager.transitionTo('ANTIFRAGILITY');
              return { 
                 content: [{ 
@@ -157,13 +165,18 @@ describe('${component_path} Contract', () => {
           const state = stateManager.getState();
           
           if (state.current_phase === 'ANTIFRAGILITY' && !regression_test_path) {
-              return { content: [{ type: "text", text: "WARNING: You are in ANTIFRAGILITY phase. You should provide 'regression_test_path' to prove you created a test for this bug." }] };
+              throw new Error("Zero-Trust Error: You are in ANTIFRAGILITY phase. You MUST provide 'regression_test_path' to prove you created a test for this bug.");
           }
 
-          // In a real implementation we would log this to history
-          // For now we just acknowledge and allow re-attempt
+          stateManager.setFailure({
+              error_log,
+              root_cause,
+              immunity_plan,
+              regression_test_path,
+              timestamp: Date.now()
+          });
           
-          return { content: [{ type: "text", text: "Failure registered. \nAction: Implement the immunity plan.\nNext Step: Fix code and call 'run_validation_step' again." }] };
+          return { content: [{ type: "text", text: "Failure registered and securely saved.\nAction: Implement the immunity plan.\nNext Step: Fix code and call 'run_validation_step' again." }] };
       })
   );
   
@@ -176,8 +189,8 @@ describe('${component_path} Contract', () => {
           if (state.current_phase !== 'VALIDATED') {
                throw new Error(`Cannot finish cycle in phase ${state.current_phase}. Must be in VALIDATED phase (passing tests).`);
           }
-          stateManager.reset(); 
-          return { content: [{ type: "text", text: "Cycle completed successfully. State reset to IDLE. Ready for next task." }] };
+          stateManager.archiveAndReset(); 
+          return { content: [{ type: "text", text: "Cycle completed successfully. Lore archived to history and state reset to IDLE." }] };
       })
   );
   

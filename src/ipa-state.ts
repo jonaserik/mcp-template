@@ -23,6 +23,7 @@ export class IPAStateManager {
         current_phase: 'IDLE',
         current_intent: null,
         current_contract: null,
+        current_failure: null,
         history: []
       };
       fs.writeFileSync(this.statePath, JSON.stringify(initialState, null, 2));
@@ -47,12 +48,33 @@ export class IPAStateManager {
     fs.writeFileSync(this.statePath, JSON.stringify(state, null, 2));
   }
 
-  reset() {
+  archiveAndReset() {
       const state = this.getState();
-      // Archive current if needed, for now just reset active
+      
+      if (state.current_intent) {
+          state.history.push({
+              intent: state.current_intent,
+              contract: state.current_contract,
+              failure: state.current_failure,
+              completed_at: Date.now()
+          });
+      }
+      
       state.current_phase = 'IDLE';
       state.current_intent = null;
       state.current_contract = null;
+      state.current_failure = null;
+      state.last_validation_output = undefined;
+      state.last_validation_command = undefined;
+      this.saveState(state);
+  }
+
+  reset() {
+      const state = this.getState();
+      state.current_phase = 'IDLE';
+      state.current_intent = null;
+      state.current_contract = null;
+      state.current_failure = null;
       this.saveState(state);
   }
 
@@ -73,6 +95,19 @@ export class IPAStateManager {
       const state = this.getState();
       state.current_contract = contract;
       state.current_phase = 'CONTRACT';
+      this.saveState(state);
+  }
+
+  setFailure(failure: Failure) {
+      const state = this.getState();
+      state.current_failure = failure;
+      this.saveState(state);
+  }
+
+  setValidationOutput(output: string, command: string) {
+      const state = this.getState();
+      state.last_validation_output = output;
+      state.last_validation_command = command;
       this.saveState(state);
   }
 }

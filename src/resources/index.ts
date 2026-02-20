@@ -22,17 +22,17 @@ export function registerResources(server: McpServer, stateManager: IPAStateManag
         "ipa://leis",
         async (uri) => {
             const manifesto = `
-# O Tao do IPA
+# The Tao of IPA
 
 1. **Incremental:** 
-   Nada é testado como sistema inteiro. Tudo é validado como delta (mudança).
+   Nothing is tested as an entire system. Everything is validated as a delta (change).
 
 2. **Procedural:** 
-   A criatividade da IA exige disciplina humana. Todo código novo deve seguir um ritual explícito:
-   **Intenção -> Contrato -> Geração -> Validação**.
+   AI creativity demands human discipline. Every new code must follow an explicit ritual:
+   **Intent -> Contract -> Generation -> Validation**.
 
-3. **Antifrágil:** 
-   Erros não são apenas corrigidos; eles devem gerar imunidade sistêmica. Nenhum bug é fechado sem virar um teste de regressão ou uma mudança estrutural.
+3. **Antifragile:** 
+   Errors are not simply fixed; they must generate systemic immunity. No bug is closed without becoming a regression test or a structural change.
             `;
             return {
                 contents: [{
@@ -48,15 +48,21 @@ export function registerResources(server: McpServer, stateManager: IPAStateManag
         "ipa-metrics",
         "ipa://metrics",
         async (uri) => {
+             const state = stateManager.getState();
+             const total_cycles = state.history ? state.history.length : 0;
+             const failures_caught = state.history ? state.history.filter((h: any) => h.failure).length : 0;
+
              return {
                 contents: [{
                     uri: uri.href,
                     mimeType: "application/json",
                     text: JSON.stringify({
+                        total_cycles_completed: total_cycles,
+                        failures_caught_and_immunized: failures_caught,
+                        health_status: total_cycles > 0 ? "Active" : "New",
                         coverage: "N/A",
                         invariants_density: "N/A",
-                        cycle_health: "Good",
-                        note: "Metrics execution not yet implemented"
+                        note: "Metrics execution via history analysis active"
                     }, null, 2)
                 }]
             };

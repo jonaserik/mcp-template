@@ -43,7 +43,9 @@ export const IPAStateSchema = z.object({
   current_phase: IPAPhaseSchema,
   current_intent: IntentSchema.nullable(),
   current_contract: ContractSchema.nullable(),
+  current_failure: FailureSchema.nullable().default(null),
   last_validation_output: z.string().optional(),
+  last_validation_command: z.string().optional(),
   history: z.array(z.object({
     intent: IntentSchema,
     contract: ContractSchema.nullable(),
