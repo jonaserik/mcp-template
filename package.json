@@ -18,7 +18,7 @@
     "model-context-protocol"
   ],
   "author": "Jonas Erik Barreto <jonaserik@outlook.com>",
-  "license": "ISC",
+  "license": "Apache-2.0",
   "type": "module",
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.26.0",

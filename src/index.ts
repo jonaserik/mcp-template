@@ -41,7 +41,8 @@ process.on("SIGTERM", gracefulShutdown);
 main().catch((error) => {
   const fs = require('fs');
   const path = require('path');
-  const logPath = path.join(process.cwd(), 'mcp-ipa-error.log');
+  const os = require('os');
+  const logPath = path.join(os.tmpdir(), 'mcp-ipa-error.log');
   const errorMessage = `[${new Date().toISOString()}] FATAL ERROR: ${error.stack || error}\n`;
   fs.appendFileSync(logPath, errorMessage);
   
@@ -52,7 +53,8 @@ main().catch((error) => {
 process.on('uncaughtException', (error) => {
   const fs = require('fs');
   const path = require('path');
-  const logPath = path.join(process.cwd(), 'mcp-ipa-error.log');
+  const os = require('os');
+  const logPath = path.join(os.tmpdir(), 'mcp-ipa-error.log');
   const errorMessage = `[${new Date().toISOString()}] UNCAUGHT EXCEPTION: ${error.stack || error}\n`;
   fs.appendFileSync(logPath, errorMessage);
   
@@ -63,7 +65,8 @@ process.on('uncaughtException', (error) => {
 process.on('unhandledRejection', (reason, promise) => {
   const fs = require('fs');
   const path = require('path');
-  const logPath = path.join(process.cwd(), 'mcp-ipa-error.log');
+  const os = require('os');
+  const logPath = path.join(os.tmpdir(), 'mcp-ipa-error.log');
   const errorMessage = `[${new Date().toISOString()}] UNHANDLED REJECTION: ${reason}\n`;
   fs.appendFileSync(logPath, errorMessage);
   
