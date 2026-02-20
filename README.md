@@ -51,3 +51,8 @@ To utilize the structural validation features, add the following scripts to your
 *   [Operational Workflow](docs/methodology.md)
 *   [Case Study: Reachability](docs/case-study.md)
 
+## License
+This project utilizes a **Dual Licensing** strategy to protect the intellectual property of the methodology while promoting open adoption of the software:
+
+* **Codebase (`mcp-ipa-guardian`)**: Licensed under the [Apache License 2.0](LICENSE). You are free to use, modify, and distribute the code, including commercially, provided you adhere to the terms (e.g., patent clause and attribution).
+* **Methodology & Documentation (`docs/`)**: The conceptual framework and detailed articles describing the IPA Methodology are licensed under a [Creative Commons Attribution 4.0 International License (CC BY 4.0)](https://creativecommons.org/licenses/by/4.0/). You are free to share and adapt the conceptual material, provided you give appropriate credit to the original creator (Jonas Erik).
